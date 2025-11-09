@@ -5,6 +5,8 @@
 #include <WiFi.h>
 #include <ESPAsyncWebServer.h>
 #include <Preferences.h>
+#include <ESP32Time.h>
+#include <TinyGPSPlus.h>
 #include "rm3100.h"
 #include "MCP9808.h"
 
@@ -89,6 +91,7 @@ struct DeviceConfig {
     int magTranslateX;
     int magTranslateY;
     int magTranslateZ;
+    bool usePps;        // whether to use external GNSS PPS for 1 Hz cadence
     bool configured;
 } deviceConfig;
 
@@ -101,6 +104,7 @@ bool configMode = false;
 // Function Prototypes
 // ========================================
 void IRAM_ATTR ppsISR();
+void IRAM_ATTR rtcTimerISR();
 bool initRM3100();
 bool readRM3100(int32_t &x, int32_t &y, int32_t &z);
 void convertToMicroTesla(int32_t rawX, int32_t rawY, int32_t rawZ,
@@ -124,7 +128,14 @@ void outputJSON();
 // PPS Interrupt Service Routine
 // ========================================
 void IRAM_ATTR ppsISR() {
-    ppsTriggered = true;
+    ppsTriggered = true; // lastPpsMillis will be updated in loop context
+}
+
+// ========================================
+// RTC 1 Hz Timer ISR (fallback cadence)
+// ========================================
+void IRAM_ATTR rtcTimerISR() {
+    rtcTick = true;
 }
 
 // ========================================
@@ -353,9 +364,10 @@ float readMCP9808() {
 // GNSS Initialization
 // ========================================
 void initGNSS() {
-    GNSSSerial.begin(115200, SERIAL_8N1, GNSS_RX, GNSS_TX);
+    GNSSSerial.begin(GNSS_BAUD, SERIAL_8N1, GNSS_RX, GNSS_TX);
     delay(100);
-    Serial.println("GNSS UART initialized");
+    Serial.print("GNSS UART initialized @ ");
+    Serial.println(GNSS_BAUD);
 }
 
 // ========================================
