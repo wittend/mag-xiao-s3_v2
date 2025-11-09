@@ -13,7 +13,7 @@
 - Sensors/ICs: 
     * PNI RM3100cb (magnetometer)
     * Microchip MCP9804/MCP9808 temperature sensor.
-    * L76K GNSS module for XIAO.
+    * Seeed Studio L76K GPS/GNSS module for XIAO.
     * Seeed Studio Wio-SX1262 for XIAO (uses Semtech SX1262 module)
     
 - Power: (battery/USB), voltage(s)
@@ -22,7 +22,7 @@
     * Solar panel and conditioning  as required.
     
 - Wiring: diagram/photo + table (pin → signal)
-    * 
+  
 - Buses: I2C/UART; target clock rates; pull-ups
     * I2C bus default timing.
     * UART (if required for GNSS) 115200 bps.
@@ -133,7 +133,7 @@ Let the input vector be `(X, Y, Z)`.
 
 
 ## 7. User Interaction
-- HTML configuration interface:
+- HTML Form configuration interface:
     * node identification 
     * location (latitude, longitude, elevation) 
     * owner
@@ -176,4 +176,5 @@ Let the input vector be `(X, Y, Z)`.
 - ESP32S3 WiFi information: https://wiki.seeedstudio.com/xiao_esp32s3_wifi_usage/
 - ESP32S3 Bluetooth LE information: https://wiki.seeedstudio.com/xiao_esp32s3_bluetooth/
 - LoRa Wio-sx1262 module: https://wiki.seeedstudio.com/wio_sx1262/
-- Seeed L76k GNSS noard for XAIO: https://wiki.seeedstudio.com/get_start_l76k_gnss/#hardware-overview
+- Seeed L76k GNSS board for XAIO: https://wiki.seeedstudio.com/get_start_l76k_gnss/#hardware-overview
+
